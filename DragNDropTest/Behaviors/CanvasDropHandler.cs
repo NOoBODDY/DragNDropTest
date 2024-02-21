@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 using Avalonia.Xaml.Interactions.DragAndDrop;
 
 namespace DragNDropTest.Behaviors;
@@ -33,7 +34,8 @@ public class CanvasDropHandler: DropHandlerBase
         {
             menu.Items.Add(new MenuItem() { Header = itemModel.Value + i });
         }
-        menu.ShowAt(canvas, true);
+        Dispatcher.UIThread.Post(()=>  menu.ShowAt(canvas, true), DispatcherPriority.Background);
+       
         return true;
     }
 }
