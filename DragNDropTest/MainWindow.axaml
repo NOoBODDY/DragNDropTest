@@ -1,0 +1,43 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:behaviors="clr-namespace:DragNDropTest.Behaviors"
+        xmlns:dragNDropTest="clr-namespace:DragNDropTest"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="DragNDropTest.MainWindow"
+        x:DataType="dragNDropTest:MainViewModel"
+        x:CompileBindings="True"
+        Title="DragNDropTest">
+    <Window.Resources>
+        <behaviors:CanvasDropHandler x:Key="CanvasDropHandler"/>
+        <behaviors:ListBoxDragHandler x:Key="ListBoxDragHandler"/>
+    </Window.Resources>
+    <DockPanel>
+        <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Collection}">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="dragNDropTest:ItemModel">
+                    <AccessText Text="{Binding Value}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                    <Setter Property="(Interaction.Behaviors)">
+                        <BehaviorCollectionTemplate>
+                            <BehaviorCollection>
+                                <ContextDragBehavior Handler="{StaticResource ListBoxDragHandler}"/>
+                            </BehaviorCollection>
+                        </BehaviorCollectionTemplate>
+                    </Setter>
+                </Style>
+            </ListBox.Styles>
+        </ListBox>
+        <Canvas Background="White">
+            <Interaction.Behaviors>
+                <BehaviorCollection>
+                    <ContextDropBehavior Handler="{StaticResource CanvasDropHandler}"/>
+                </BehaviorCollection>
+            </Interaction.Behaviors>
+        </Canvas>
+    </DockPanel>
+</Window>
